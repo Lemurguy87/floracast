@@ -1,0 +1,36 @@
+services:
+  jupyter:
+    build: .
+    environment:
+      - JUPYTER_TOKEN=${JUPYTER_TOKEN}
+    env_file:
+      - .env
+    ports:
+      - "8888:8888"
+    volumes:
+      - ./notebooks:/home/jovyan/work
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  postgres:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data  # Using the named volume
+      - ./init-db:/docker-entrypoint-initdb.d   # Using a bind mount
+    healthcheck:
+        test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB} || exit 1"]
+        interval: 10s
+        timeout: 5s
+        retries: 5
+        start_period: 10s  
+
+volumes:
+  postgres_data:
+

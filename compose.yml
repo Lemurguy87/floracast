@@ -1,8 +1,7 @@
 services:
   jupyter:
     build: ./python_container
-    environment:
-      - JUPYTER_TOKEN=${JUPYTER_TOKEN}
+    command: start-notebook.sh --NotebookApp.token='' --NotebookApp.password=''
     env_file:
       - .env
     ports:

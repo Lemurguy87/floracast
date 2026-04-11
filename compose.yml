@@ -20,6 +20,9 @@ services:
       - .env
     ports:
       - "8787:8787"
+    #command: ["/bin/bash", "-c", "/init.sh && Rscript /home/rstudio/ProcessCuratedMetagenomics.R"] 
+    volumes:
+      - ./notebooks:/home/rstudio
     depends_on:
       postgres:
         condition: service_healthy

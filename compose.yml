@@ -9,7 +9,7 @@ services:
     volumes:
       - ./notebooks:/home/jovyan/work
     depends_on:
-      postgres:
+      postgres_db:
         condition: service_healthy
 
   r_studio:
@@ -24,18 +24,18 @@ services:
     volumes:
       - ./notebooks:/home/rstudio
     depends_on:
-      postgres:
+      postgres_db:
         condition: service_healthy
 
 
-  postgres:
+  postgres_db:
     image: postgres:15
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: ${POSTGRES_DB}
     ports:
-      - "5432:5432"
+      - "${LOCAL_PORT}:${CONTAINER_PORT}"
     volumes:
       - postgres_data:/var/lib/postgresql/data  # Using the named volume
       - ./init-db:/docker-entrypoint-initdb.d   # Using a bind mount

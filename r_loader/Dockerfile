@@ -34,4 +34,10 @@ RUN R -e " \
     BiocManager::install('curatedMetagenomicData', ask=FALSE, update=TRUE); \
     library(curatedMetagenomicData)"
 
+# Step 7: Database connectivity packages
+RUN R -e " \
+    install.packages(c('DBI', 'RPostgres'), repos='https://cloud.r-project.org'); \
+    library(DBI); \
+    library(RPostgres)"
+
 WORKDIR /data

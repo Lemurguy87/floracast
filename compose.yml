@@ -5,7 +5,7 @@ services:
     env_file:
       - .env
     ports:
-      - "8888:8888"
+      - "${PYTHON_PORT}:8888"
     volumes:
       - ./notebooks:/home/jovyan/work
     depends_on:
@@ -19,10 +19,10 @@ services:
     env_file:
       - .env
     ports:
-      - "8787:8787"
-    #command: ["/bin/bash", "-c", "/init.sh && Rscript /home/rstudio/ProcessCuratedMetagenomics.R"] 
-    volumes:
-      - ./notebooks:/home/rstudio
+      - "${RSTUDIO_PORT}:8787"
+    command: 
+      - Rscript
+      - /home/rstudio/ProcessCuratedMetagenomics.R
     depends_on:
       postgres_db:
         condition: service_healthy
@@ -35,10 +35,10 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: ${POSTGRES_DB}
     ports:
-      - "${LOCAL_PORT}:${CONTAINER_PORT}"
+      - "${POSTGRES_PORT}:5432"
     volumes:
-      - postgres_data:/var/lib/postgresql/data  # Using the named volume
-      - ./init-db:/docker-entrypoint-initdb.d   # Using a bind mount
+      - postgres_data:/var/lib/postgresql/data 
+      - ./init-db:/docker-entrypoint-initdb.d  
     healthcheck:
         test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB} || exit 1"]
         interval: 10s

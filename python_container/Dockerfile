@@ -8,6 +8,4 @@ RUN pip install psycopg2-binary \
     xgboost \
     plotly
 
-# COPY notebooks /home/jovyan/work/
-
 WORKDIR /home/jovyan/work

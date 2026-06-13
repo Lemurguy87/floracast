@@ -40,4 +40,6 @@ RUN R -e " \
     library(DBI); \
     library(RPostgres)"
 
+COPY ProcessCuratedMetagenomics.R /home/rstudio/ProcessCuratedMetagenomics.R
+
 WORKDIR /data

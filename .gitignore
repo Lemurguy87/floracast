@@ -3,3 +3,5 @@ notebooks/.ipynb_checkpoints/
 notebooks/.cache/
 notebooks/.config/
 notebooks/.local/
+notebooks/src/__pycache__
+notebooks/.ipynb_checkpoints
